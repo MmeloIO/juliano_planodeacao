@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano de Ação · Juliano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap');
+
+:root{
+  --bg-dark:#0A0C1A; --bg-surface:#11142B; --bg-elevated:#161A38;
+  --navy:#1E2761; --navy-light:#2E3B8C; --navy-border:#262E63;
+  --gold:#C9A84C; --gold-light:#F0C96E; --gold-dim:rgba(201,168,76,0.08);
+  --text-primary:#F3F1E8; --text-secondary:#C7C6D6; --text-muted:#5E6188;
+  --danger:#E4685B; --warning:#E0A857; --info:#7C93D6;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; background:var(--bg-dark); color:var(--text-secondary);
+  font-family:'DM Sans',sans-serif; font-weight:400; line-height:1.6;
+}
+.wrap{max-width:640px; margin:0 auto;}
+
+/* --- Password gate --- */
+#gate{
+  position:fixed; inset:0; background:var(--bg-dark); z-index:999;
+  display:flex; align-items:center; justify-content:center; padding:24px;
+}
+.gate-card{
+  background:var(--bg-surface); border:0.5px solid var(--navy-border);
+  border-radius:14px; padding:36px 32px; max-width:360px; width:100%; text-align:center;
+}
+.gate-card p.lbl{font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); margin:0 0 18px;}
+.gate-card input{
+  width:100%; background:var(--bg-elevated); border:0.5px solid var(--navy-border);
+  color:var(--text-primary); border-radius:8px; padding:12px 14px; font-size:15px;
+  font-family:'DM Sans',sans-serif; margin-bottom:14px; outline:none;
+}
+.gate-card button{
+  width:100%; background:var(--gold); color:#1A1506; border:none;
+  border-radius:8px; padding:12px; font-size:14px; font-weight:500; cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+}
+.gate-err{color:var(--danger); font-size:12px; margin-top:10px; display:none;}
+
+/* --- Brand / Cover --- */
+.brand-tag{
+  display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:500;
+  letter-spacing:0.08em; text-transform:uppercase; color:var(--gold-light);
+  border:0.5px solid rgba(201,168,76,0.25); padding:5px 12px; border-radius:20px;
+  background:var(--gold-dim); margin-bottom:28px;
+}
+.brand-dot{width:6px; height:6px; border-radius:50%; background:var(--gold);}
+.cover{
+  background:linear-gradient(180deg, #0F1330 0%, #0A0C1A 100%);
+  border-bottom:1px solid var(--navy-border);
+  padding:48px 28px 40px; position:relative; overflow:hidden;
+}
+.cover::before{
+  content:''; position:absolute; top:-90px; right:-90px; width:300px; height:300px;
+  border-radius:50%; background:radial-gradient(circle, rgba(201,168,76,0.10) 0%, transparent 70%);
+}
+.cover::after{
+  content:''; position:absolute; bottom:-100px; left:-60px; width:220px; height:220px;
+  border-radius:50%; background:radial-gradient(circle, rgba(30,39,97,0.5) 0%, transparent 70%);
+}
+.cover-period{font-size:12px; color:var(--text-muted); margin:0 0 6px; position:relative; z-index:1;}
+.cover-name{font-family:'Playfair Display',serif; font-size:32px; font-weight:400; color:var(--text-primary); margin:0 0 18px; line-height:1.15; position:relative; z-index:1;}
+.cover-quote{
+  font-family:'Playfair Display',serif; font-style:italic; font-size:17px; color:var(--gold-light);
+  line-height:1.55; border-left:2px solid var(--gold); padding-left:18px; margin:0; position:relative; z-index:1;
+}
+
+/* --- Sections --- */
+.section{padding:32px 28px; border-bottom:1px solid #14183A;}
+.section-label{
+  font-size:10px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--gold); display:flex; align-items:center; gap:10px; margin-bottom:18px;
+}
+.section-label::after{content:''; flex:1; height:0.5px; background:var(--navy-border);}
+.section-title{font-family:'Playfair Display',serif; font-size:20px; color:var(--text-primary); margin:0 0 8px; font-weight:400;}
+.section-subtitle{font-size:13.5px; color:var(--text-muted); margin:0 0 24px; line-height:1.6;}
+
+/* --- Alert box --- */
+.alert-box{border-radius:10px; padding:16px 18px; display:flex; gap:12px; margin-bottom:20px;}
+.alert-box.info{background:rgba(124,147,214,0.08); border:0.5px solid rgba(124,147,214,0.25);}
+.alert-box.warning{background:rgba(224,168,87,0.08); border:0.5px solid rgba(224,168,87,0.25);}
+.alert-box.gold{background:var(--gold-dim); border:0.5px solid rgba(201,168,76,0.25);}
+.alert-title{font-size:13px; font-weight:500; margin:0 0 4px;}
+.alert-box.info .alert-title{color:var(--info);}
+.alert-box.warning .alert-title{color:var(--warning);}
+.alert-box.gold .alert-title{color:var(--gold-light);}
+.alert-text{font-size:13.5px; line-height:1.6; margin:0; color:#A9A8BC;}
+
+/* --- Metric / snap cards --- */
+.snap-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:6px;}
+.snap-card{border-radius:10px; padding:16px;}
+.snap-card.navy{background:rgba(30,39,97,0.35); border:0.5px solid var(--navy-border);}
+.snap-card.gold{background:var(--gold-dim); border:0.5px solid rgba(201,168,76,0.25);}
+.snap-val{font-size:22px; font-weight:500; color:var(--text-primary); font-family:'DM Mono',monospace;}
+.snap-val.gold{color:var(--gold-light);}
+.snap-lbl{font-size:11.5px; color:var(--text-muted); margin-top:4px;}
+
+/* --- Habit card --- */
+.habit-card{
+  background:var(--bg-elevated); border:0.5px solid var(--navy-border); border-radius:12px;
+  padding:18px 20px; margin-bottom:14px; display:flex; gap:14px; align-items:flex-start;
+}
+.habit-icon{
+  width:34px; height:34px; border-radius:9px; background:var(--gold-dim);
+  display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0;
+}
+.habit-title{font-size:14px; font-weight:500; color:var(--text-primary); margin:0 0 4px;}
+.habit-desc{font-size:13px; color:var(--text-muted); margin:0; line-height:1.55;}
+
+/* --- Order/priority track --- */
+.track{position:relative; padding-left:28px; margin-top:8px;}
+.track::before{content:''; position:absolute; left:10px; top:6px; bottom:6px; width:1px; background:var(--navy-border);}
+.track-step{position:relative; padding-bottom:22px;}
+.track-step:last-child{padding-bottom:0;}
+.track-dot{
+  position:absolute; left:-28px; top:2px; width:20px; height:20px; border-radius:50%;
+  background:var(--bg-dark); border:1.5px solid var(--gold); display:flex; align-items:center; justify-content:center;
+  font-size:10px; font-weight:500; color:var(--gold-light);
+}
+.track-title{font-size:14px; font-weight:500; color:var(--text-primary); margin:0 0 3px;}
+.track-desc{font-size:12.5px; color:var(--text-muted); margin:0; line-height:1.5;}
+
+/* --- Advisor tip cards --- */
+.tip-card{
+  background:var(--bg-surface); border:0.5px solid var(--navy-border); border-radius:10px;
+  padding:16px 18px; margin-bottom:12px;
+}
+.tip-source{font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase; color:var(--gold); font-weight:500; margin:0 0 6px;}
+.tip-text{font-size:13.5px; color:var(--text-secondary); margin:0; line-height:1.6;}
+
+/* --- Chart --- */
+.chart-box{background:var(--bg-surface); border:0.5px solid var(--navy-border); border-radius:12px; padding:18px 14px 8px; margin-top:8px;}
+canvas{max-width:100%;}
+
+/* --- Checklist / next steps recap --- */
+.recap-list{list-style:none; margin:0; padding:0;}
+.recap-list li{
+  display:flex; gap:10px; align-items:flex-start; font-size:13.5px; color:var(--text-secondary);
+  padding:9px 0; border-bottom:0.5px solid #14183A;
+}
+.recap-list li:last-child{border-bottom:none;}
+.recap-list li::before{content:'✓'; color:var(--gold); font-weight:600; flex-shrink:0;}
+
+/* --- Closing --- */
+.closing{background:#080A17; padding:36px 28px; text-align:center; border-top:1px solid var(--navy-border);}
+.closing-quote{
+  font-family:'Playfair Display',serif; font-style:italic; font-size:19px; color:var(--text-secondary);
+  line-height:1.6; max-width:440px; margin:0 auto 22px;
+}
+.closing-quote em{color:var(--gold-light); font-style:italic;}
+.cta-btn{
+  display:inline-block; background:var(--gold); color:#1A1506; border:none;
+  border-radius:8px; padding:13px 22px; font-size:13.5px; font-weight:500; cursor:pointer;
+  font-family:'DM Sans',sans-serif; margin-top:4px;
+}
+.signature{font-size:11.5px; color:var(--text-muted); margin-top:28px; letter-spacing:0.02em;}
+.signature b{color:var(--gold-light);}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gate-card">
+    <p class="lbl">Plano de Ação · Acesso restrito</p>
+    <input type="password" id="pw" placeholder="Senha de acesso" onkeydown="if(event.key==='Enter')unlock()">
+    <button onclick="unlock()">Acessar meu plano</button>
+    <p class="gate-err" id="err">Senha incorreta. Tente novamente.</p>
+  </div>
+</div>
+
+<div class="wrap" id="content" style="display:none;">
+
+  <!-- CAPA -->
+  <div class="cover">
+    <div class="brand-tag"><span class="brand-dot"></span>Matheus Melo · Planejamento Financeiro</div>
+    <p class="cover-period">Plano de Ação · Setembro 2026</p>
+    <h1 class="cover-name">Juliano &amp; Cristiane</h1>
+    <p class="cover-quote">Cada dólar guardado essa semana é um tijolo a mais na casa que vocês estão construindo — pra Julia, pro Moisés, e pro caminho de volta pra casa.</p>
+  </div>
+
+  <!-- ONDE ESTAMOS -->
+  <div class="section">
+    <p class="section-label">Onde estamos</p>
+    <h2 class="section-title">Um recomeço com direção</h2>
+    <p class="section-subtitle">Vocês já fizeram a parte mais difícil: olhar pro orçamento de frente. Agora é hora de transformar isso em rotina — sem pressa, sem culpa, um passo de cada vez.</p>
+    <div class="alert-box info">
+      <div>
+        <p class="alert-title">Combinado de hoje</p>
+        <p class="alert-text">Definimos juntos uma meta simples e sustentável: guardar US$ 200 por semana. Não é sobre perfeição — é sobre constância.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- O COMBINADO -->
+  <div class="section">
+    <p class="section-label">Nosso combinado</p>
+    <h2 class="section-title">A meta da semana</h2>
+    <p class="section-subtitle">Esse número é o coração do plano. Tudo o que vem depois — reserva, dívidas, sonhos da família — passa por aqui.</p>
+    <div class="snap-grid">
+      <div class="snap-card navy">
+        <div class="snap-val">US$ 200</div>
+        <div class="snap-lbl">guardados por semana</div>
+      </div>
+      <div class="snap-card gold">
+        <div class="snap-val gold">~US$ 867</div>
+        <div class="snap-lbl">equivalente por mês</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HÁBITO -->
+  <div class="section">
+    <p class="section-label">O hábito que muda tudo</p>
+    <h2 class="section-title">15 minutos por semana</h2>
+    <p class="section-subtitle">Não precisa de planilha complicada nem de horas de dedicação. Só de constância — um check-in curto, no mesmo dia, toda semana.</p>
+    <div class="habit-card">
+      <div class="habit-icon">🗓️</div>
+      <div>
+        <p class="habit-title">Revisão semanal do orçamento</p>
+        <p class="habit-desc">Um momento fixo na semana (sugerimos domingo à noite ou segunda de manhã) só para olhar o que entrou, o que saiu, e separar os US$ 200.</p>
+      </div>
+    </div>
+    <div class="habit-card">
+      <div class="habit-icon">💬</div>
+      <div>
+        <p class="habit-title">Avisar assim que o valor estiver separado</p>
+        <p class="habit-desc">Toda vez que os US$ 200 da semana estiverem garantidos, é só me chamar. A gente decide juntos, na hora, para onde esse dinheiro vai.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDEM DE PRIORIDADE -->
+  <div class="section">
+    <p class="section-label">Ordem de prioridade</p>
+    <h2 class="section-title">Primeiro a base, depois o resto</h2>
+    <p class="section-subtitle">Essa ordem existe para proteger vocês. Sem uma reserva, qualquer imprevisto vira dívida nova — e a gente não quer isso pra família de vocês.</p>
+    <div class="track">
+      <div class="track-step">
+        <div class="track-dot">1</div>
+        <p class="track-title">Construir a reserva de emergência</p>
+        <p class="track-desc">Os primeiros aportes de US$ 200/semana formam esse colchão de segurança — o que dá tranquilidade pra família em qualquer imprevisto.</p>
+      </div>
+      <div class="track-step">
+        <div class="track-dot">2</div>
+        <p class="track-title">Priorizar as dívidas, uma de cada vez</p>
+        <p class="track-desc">Com a reserva formada, direcionamos os próximos aportes para reduzir dívidas — começando pelas que pesam mais no orçamento.</p>
+      </div>
+      <div class="track-step">
+        <div class="track-dot">3</div>
+        <p class="track-title">Avançar para os projetos de vida</p>
+        <p class="track-desc">Casa dos pais, negócio da família, sair do consórcio, mobiliar a casa própria — cada um no seu tempo, com a base já protegida.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJEÇÃO -->
+  <div class="section">
+    <p class="section-label">Projeção</p>
+    <h2 class="section-title">Onde a constância leva vocês</h2>
+    <p class="section-subtitle">Essa curva mostra só uma coisa: o poder de manter os US$ 200 por semana, sem interrupção. O valor final da reserva ideal, a gente ainda vai calcular juntos com base no orçamento essencial de vocês.</p>
+    <div class="chart-box">
+      <canvas id="chartReserva" height="200"></canvas>
+    </div>
+  </div>
+
+  <!-- DICAS DE MERCADO -->
+  <div class="section">
+    <p class="section-label">Inspiração de quem entende</p>
+    <h2 class="section-title">Hábitos de quem constrói patrimônio</h2>
+    <p class="section-subtitle">Separei alguns princípios de referências reconhecidas em educação financeira — todos batem com o caminho que estamos trilhando juntos.</p>
+    <div class="tip-card">
+      <p class="tip-source">Dave Ramsey</p>
+      <p class="tip-text">Antes de atacar qualquer dívida, construa uma reserva inicial. Ela evita que um imprevisto vire uma dívida nova — exatamente a lógica do nosso passo 1.</p>
+    </div>
+    <div class="tip-card">
+      <p class="tip-source">Warren Buffett</p>
+      <p class="tip-text">A ideia de "pagar-se primeiro" — separar a poupança antes de gastar o resto — é a base do nosso combinado dos US$ 200 por semana.</p>
+    </div>
+    <div class="tip-card">
+      <p class="tip-source">Suze Orman</p>
+      <p class="tip-text">Transformar a organização financeira em rotina, com check-ins curtos e regulares, é o que sustenta qualquer plano no longo prazo — daí os 15 minutos semanais.</p>
+    </div>
+  </div>
+
+  <!-- PRÓXIMOS PASSOS -->
+  <div class="section">
+    <p class="section-label">Combinado final</p>
+    <h2 class="section-title">O que fica valendo a partir de agora</h2>
+    <ul class="recap-list">
+      <li>Guardar US$ 200 por semana, de forma consistente</li>
+      <li>Revisar o orçamento toda semana, em 15 minutos</li>
+      <li>Construir primeiro a reserva de emergência</li>
+      <li>Só depois, priorizar as dívidas, uma de cada vez</li>
+      <li>Avisar o Matheus sempre que os US$ 200 estiverem separados, para decidirmos juntos o destino</li>
+    </ul>
+  </div>
+
+  <!-- FECHAMENTO -->
+  <div class="closing">
+    <p class="closing-quote">Vocês não estão só guardando dinheiro. Estão construindo o caminho de <em>volta pra casa</em> — com a Julia, o Moisés, e a família toda mais segura a cada semana.</p>
+    <a class="cta-btn" href="https://wa.me/5599991756837?text=J%C3%A1%20separei%20meus%20US%24%20200%20dessa%20semana%2C%20Matheus.%20Para%20onde%20direcionamos%3F" target="_blank" rel="noopener" style="text-decoration:none;">Já separei meus US$ 200 dessa semana</a>
+    <p class="signature"><b>Matheus Melo</b> · Planejador Financeiro</p>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+function unlock(){
+  var pw = document.getElementById('pw').value.trim().toLowerCase();
+  if(pw === 'juliano2026'){
+    document.getElementById('gate').style.display='none';
+    document.getElementById('content').style.display='block';
+    initChart();
+  } else {
+    document.getElementById('err').style.display='block';
+  }
+}
+
+function initChart(){
+  var ctx = document.getElementById('chartReserva').getContext('2d');
+  var weeks = [];
+  var values = [];
+  var acc = 0;
+  for(var w=0; w<=24; w+=4){
+    weeks.push('Sem ' + w);
+    acc = w*200;
+    values.push(acc);
+  }
+  new Chart(ctx, {
+    type:'line',
+    data:{
+      labels:weeks,
+      datasets:[{
+        label:'Reserva acumulada (US$)',
+        data:values,
+        borderColor:'#C9A84C',
+        backgroundColor:'rgba(201,168,76,0.12)',
+        borderWidth:2,
+        fill:true,
+        tension:0.35,
+        pointBackgroundColor:'#F0C96E',
+        pointBorderColor:'#0A0C1A',
+        pointRadius:4
+      }]
+    },
+    options:{
+      responsive:true,
+      plugins:{ legend:{display:false} },
+      scales:{
+        x:{ ticks:{color:'#5E6188', font:{family:'DM Sans', size:11}}, grid:{color:'rgba(38,46,99,0.4)'} },
+        y:{ ticks:{color:'#5E6188', font:{family:'DM Sans', size:11}, callback:function(v){return 'US$ '+v;}}, grid:{color:'rgba(38,46,99,0.4)'} }
+      }
+    }
+  });
+}
+</script>
+</body>
+</html>
